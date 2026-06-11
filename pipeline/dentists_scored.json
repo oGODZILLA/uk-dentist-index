@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Smile Dental Clinic",
+        "website": "https://smileclinic.co.uk",
+        "phone": "01234 567890",
+        "email": "info@smileclinic.co.uk",
+        "rating": 3.8,
+        "reviews": 12,
+        "nhs": true,
+        "facebook": "",
+        "instagram": "",
+        "score": 55,
+        "signals": [
+            "Low rating",
+            "Low review count",
+            "No Facebook presence",
+            "No Instagram presence"
+        ]
+    }
+]
