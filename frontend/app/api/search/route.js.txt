@@ -1,19 +1,37 @@
-import { createClient } from '@supabase/supabase-js';
+"use client";
+import { useState } from "react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+export default function Home() {
+  const [q, setQ] = useState("");
+  const [results, setResults] = useState([]);
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const q = searchParams.get("q") || "";
+  async function search(value) {
+    setQ(value);
+    const r = await fetch(`/api/search?q=${value}`);
+    const data = await r.json();
+    setResults(data);
+  }
 
-  const { data } = await supabase
-    .from("dentists")
-    .select("name, address, website")
-    .ilike("name", `%${q}%`)
-    .limit(20);
+  return (
+    <div style={{ padding: 40 }}>
+      <h1>UK Dentist Intelligence</h1>
 
-  return Response.json(data);
+      <input 
+        value={q}
+        onChange={(e) => search(e.target.value)}
+        placeholder="Search dentists..." 
+        style={{ padding: 10, width: 300 }}
+      />
+
+      <div style={{ marginTop: 20 }}>
+        {results.map((d, i) => (
+          <div key={i} style={{ marginBottom: 10 }}>
+            <strong>{d.name}</strong><br />
+            {d.address}<br />
+            {d.website}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
