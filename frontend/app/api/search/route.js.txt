@@ -1,0 +1,19 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get("q") || "";
+
+  const { data } = await supabase
+    .from("dentists")
+    .select("name, address, website")
+    .ilike("name", `%${q}%`)
+    .limit(20);
+
+  return Response.json(data);
+}
